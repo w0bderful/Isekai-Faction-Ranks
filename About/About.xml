@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Isekai Faction Ranks</name>
+  <author>w0bderful</author>
+  <packageId>local.isekai.factionranks</packageId>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <modDependencies>
+    <li><packageId>brrainz.harmony</packageId><displayName>Harmony</displayName><steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl></li>
+    <li><packageId>JellyCreative.IsekaiLeveling</packageId><displayName>ISEKAI RPG LEVELING</displayName><steamWorkshopUrl>steam://url/CommunityFilePage/3657580708</steamWorkshopUrl></li>
+  </modDependencies>
+  <loadAfter><li>brrainz.harmony</li><li>JellyCreative.IsekaiLeveling</li></loadAfter>
+  <description>ISEKAI RPG LEVELING용 별도 패치입니다.
+
+• 원본의 동물 제외 설정을 유지하면서 플레이어 소속 동물만 랭크 허용
+• 적대 세력의 랭크 능력치, 성장, 오라와 랭크 보상 비활성화
+• 선택 사항: 플레이어 소속 이외의 모든 대상 제외
+• 길들인 생물의 능력치 보너스 유지율 설정 (0~100%)
+
+설정: 옵션 → 모드 설정 → Isekai Faction Ranks
+원본 모드 아래에 배치하세요. 원본 모드가 필요합니다.
+기존 성장 데이터는 보존합니다. 이미 지급된 장비 강화나 초능력은 삭제하지 않습니다.
+
+Independent faction eligibility patch for ISEKAI RPG LEVELING. Requires the original mod. Version 1.0.0.</description>
+</ModMetaData>

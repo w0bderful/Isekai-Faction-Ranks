@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <IFR_Heading>Rank eligibility settings</IFR_Heading>
+  <IFR_Animals>Allow player-owned animals to rank</IFR_Animals>
+  <IFR_AnimalsTip>Player-faction animals can rank and gain XP even when the original Exclude Animals setting is enabled. Wild animals still follow the original setting.</IFR_AnimalsTip>
+  <IFR_Hostiles>Disable ranks for hostile factions</IFR_Hostiles>
+  <IFR_HostilesTip>Disables rank stats, XP, aura and rank rewards for pawns in factions hostile to the player, including humanlikes, animals and mechs. Player-owned animals remain eligible.</IFR_HostilesTip>
+  <IFR_PlayerOnly>Only allow the player faction</IFR_PlayerOnly>
+  <IFR_PlayerOnlyTip>Also excludes neutral, allied and factionless pawns, including wild animals. Overrides the hostile-faction toggle. Prisoners belonging to another faction are excluded.</IFR_PlayerOnlyTip>
+  <IFR_Notes>Uses current faction and diplomacy. Taming or recruitment restores eligibility. Saved levels and XP are retained; existing Isekai traits are suppressed while their owner is excluded.</IFR_Notes>
+  <IFR_Retention>Tamed creature stat bonus retention: {0}</IFR_Retention>
+  <IFR_RetentionTip>Overrides original retention while Allow player-owned animals is enabled. 0% means no stat bonuses; 100% means full bonuses. Like the original setting, this applies to player-owned non-mech creatures and their stat explanations.</IFR_RetentionTip>
+</LanguageData>

@@ -1,0 +1,6 @@
+Isekai Faction Ranks 1.0.0
+Built: 2026-10-03
+RimWorld 1.6
+Original workshop: 3657580708
+Original About version: 1.1.8.3
+Original DLL SHA256: E4E4A3C30BCDCE6FED9006FC9A50CA1CBAE94CDCB6C583AC6685E6E2BDA47CE3
