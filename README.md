@@ -66,4 +66,3 @@ Tests/test.ps1은 Unity 밖에서 가능한 서명, IL, 부분 Harmony 및 동�
 
 - GitHub: https://github.com/w0bderful/Isekai-Faction-Ranks
 - Steam Workshop: https://steamcommunity.com/sharedfiles/filedetails/?id=3812345444
-- 현재 창작마당 공개 범위: 비공개 (소유자 계정으로 로그인해야 볼 수 있습니다).
