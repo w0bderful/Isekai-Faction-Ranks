@@ -1,13 +1,15 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 & "$root\build.ps1"
-$managed = 'D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed'
-$workshop = 'D:\SteamLibrary\steamapps\workshop\content\294100'
-$refs = @("$managed\Assembly-CSharp.dll", "$managed\UnityEngine.CoreModule.dll", "$managed\netstandard.dll", "$workshop\3657580708\Assemblies\IsekaiLeveling.dll", "$workshop\2009463077\Current\Assemblies\0Harmony.dll", "$root\Assemblies\IsekaiFactionRanks.dll")
-$argsForCompiler = @('/nologo','/target:exe','/langversion:5',"/out:$PSScriptRoot\Validate.exe")
-$argsForCompiler += $refs | ForEach-Object { '/reference:' + $_ }
-$argsForCompiler += "$PSScriptRoot\Validate.cs"
-& "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe" @argsForCompiler
+# Stock .NET 10 lacks RimWorld 1.7's UnityEngine* -> UnityStubs redirect; build forwarding shims.
+New-Item -ItemType Directory -Force -Path "$PSScriptRoot\obj\shims" | Out-Null
+& dotnet run --file "$PSScriptRoot\UnityShim\Generate.cs" -- 'D:\SteamLibrary\steamapps\common\RimWorld\UnityStubs.dll' "$PSScriptRoot\obj\shims\Forwards.cs"
+if ($LASTEXITCODE -ne 0) { throw 'Shim generation failed' }
+foreach ($name in 'UnityEngine.CoreModule','UnityEngine.TextRenderingModule','UnityEngine.IMGUIModule','UnityEngine.AudioModule','UnityEngine.ImageConversionModule') {
+    & dotnet build "$PSScriptRoot\UnityShim\UnityShim.csproj" -nologo -v q "-p:ShimName=$name"
+    if ($LASTEXITCODE -ne 0) { throw "Shim build failed: $name" }
+}
+& dotnet build "$PSScriptRoot\Validate.csproj" -nologo -v q
 if ($LASTEXITCODE -ne 0) { throw 'Test compilation failed' }
-& "$PSScriptRoot\Validate.exe" $root
+& dotnet "$PSScriptRoot\bin\Validate.dll" $root
 if ($LASTEXITCODE -ne 0) { throw 'Validation failed' }

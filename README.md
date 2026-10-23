@@ -1,6 +1,6 @@
-# Isekai Faction Ranks 1.0.0
+# Isekai Faction Ranks 1.1.0
 
-RimWorld 1.6 / ISEKAI RPG LEVELING (Workshop 3657580708)용 별도 패치.
+RimWorld 1.6·1.7 / ISEKAI RPG LEVELING (Workshop 3657580708)용 별도 패치.
 현재 설치된 원본 1.1.8.3의 DLL에 맞춰 작성했습니다. 원본 DLL은 수정하거나 포함하지 않습니다.
 
 ## 설치와 설정
@@ -43,23 +43,24 @@ RimWorld 1.6 / ISEKAI RPG LEVELING (Workshop 3657580708)용 별도 패치.
 
 ## 검증
 
-- 현재 RimWorld 및 원본 DLL을 직접 참조하여 빌드.
+- RimWorld 1.7(.NET 10) 및 원본 DLL을 직접 참조하여 빌드. 1.6용 DLL은 `1.6/Assemblies`에 그대로 유지.
 - 원본 컴포넌트 조회 73곳(66개 메서드)의 IL 치환과 서명 검증.
 - 컴포넌트 생성/복구/저장 경로는 보존하여 중복 컴포넌트 방지.
 - 성장/생성/오라 등 33개 진입점의 서명 검증.
 - 실제 DLL에 Harmony 패치 코드 생성 검증 및 모의 Pawn/Faction 기반 동작 검사.
 - 원본 동물 제외 + 정착민 동물 예외, 적대/중립/플레이어 전용,
   경험치 보존, 포섭, 특성 억제/복원, 0% 원본 유지율 덮어쓰기 확인.
-- Unity가 필요한 정적 초기화와 실제 게임 UI/전투/저장 후 로드는 아직 게임 내 검증 전입니다.
+- 게임 엔진이 필요한 정적 초기화와 실제 게임 UI/전투/저장 후 로드는 아직 게임 내 검증 전입니다.
 
 원본 업데이트로 API가 바뀌어 적용에 실패하면 로그에 [Isekai Faction Ranks] 오류를 남기고
 이 패치가 설치한 Harmony 변경을 되돌립니다.
 
 ## 소스 빌드
 
-Windows PowerShell에서 ./build.ps1 실행. 필요하면 -RimWorld 및 -Workshop 경로 지정.
+Windows PowerShell에서 ./build.ps1 실행(.NET 10 SDK 필요). 필요하면 -RimWorld 및 -Workshop 경로 지정.
+결과는 `1.7/Assemblies/IsekaiFactionRanks.dll`이며, `LoadFolders.xml`이 게임 버전별 DLL을 고릅니다.
 원본 Isekai DLL, 게임 DLL, Harmony는 각자의 설치 위치에서 참조합니다.
-Tests/test.ps1은 Unity 밖에서 가능한 서명, IL, 부분 Harmony 및 동작 검증을 실행합니다.
+Tests/test.ps1은 게임 밖에서 가능한 서명, IL, 부분 Harmony 및 동작 검증을 실행합니다.
 테스트 실행 파일은 게임 모드 배포물에 필요하지 않습니다.
 
 ## 배포

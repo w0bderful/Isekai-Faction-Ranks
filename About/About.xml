@@ -3,7 +3,7 @@
   <name>Isekai Faction Ranks</name>
   <author>w0bderful</author>
   <packageId>local.isekai.factionranks</packageId>
-  <supportedVersions><li>1.6</li></supportedVersions>
+  <supportedVersions><li>1.6</li><li>1.7</li></supportedVersions>
   <modDependencies>
     <li><packageId>brrainz.harmony</packageId><displayName>Harmony</displayName><steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl></li>
     <li><packageId>JellyCreative.IsekaiLeveling</packageId><displayName>ISEKAI RPG LEVELING</displayName><steamWorkshopUrl>steam://url/CommunityFilePage/3657580708</steamWorkshopUrl></li>
@@ -20,5 +20,5 @@
 원본 모드 아래에 배치하세요. 원본 모드가 필요합니다.
 기존 성장 데이터는 보존합니다. 이미 지급된 장비 강화나 초능력은 삭제하지 않습니다.
 
-Independent faction eligibility patch for ISEKAI RPG LEVELING. Requires the original mod. Version 1.0.0.</description>
+Independent faction eligibility patch for ISEKAI RPG LEVELING. Requires the original mod. Version 1.1.0 (RimWorld 1.6 / 1.7).</description>
 </ModMetaData>

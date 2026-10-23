@@ -1,3 +1,6 @@
-Tests/Validate.exe
 *.pdb
 *.log
+Tests/bin/
+Tests/obj/
+Source/obj/
+Tests/UnityShim/obj/

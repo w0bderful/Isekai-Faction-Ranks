@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Loader;
 using HarmonyLib;
 using IsekaiFactionRanks;
 using Verse;
@@ -19,11 +20,12 @@ class Validate
     static int Main(string[] args)
     {
         root = args[0];
-        AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs e)
+        AssemblyLoadContext.Default.Resolving += delegate(AssemblyLoadContext context, AssemblyName name)
         {
-            string file = new AssemblyName(e.Name).Name + ".dll";
-            foreach (string path in new[] { root + @"\Assemblies", @"D:\SteamLibrary\steamapps\workshop\content\294100\3657580708\Assemblies", @"D:\SteamLibrary\steamapps\workshop\content\294100\2009463077\Current\Assemblies", @"D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed" })
-                if (File.Exists(Path.Combine(path, file))) return Assembly.LoadFrom(Path.Combine(path, file));
+            // RimWorld 1.7 redirects UnityEngine* to UnityStubs; stock .NET needs the forwarding shims.
+            string file = name.Name + ".dll";
+            foreach (string path in new[] { root + @"\Tests\bin\shims", root + @"\1.7\Assemblies", @"D:\SteamLibrary\steamapps\workshop\content\294100\3657580708\Assemblies", @"D:\SteamLibrary\steamapps\workshop\content\294100\2009463077\1.7\Assemblies", @"D:\SteamLibrary\steamapps\common\RimWorld" })
+                if (File.Exists(Path.Combine(path, file))) return context.LoadFromAssemblyPath(Path.Combine(path, file));
             return null;
         };
         try { Run(); return 0; } catch (Exception e) { Console.WriteLine(e); return 1; }

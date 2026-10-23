@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <NoWarn>SYSLIB0050</NoWarn>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RimWorld Condition="'$(RimWorld)' == ''">D:\SteamLibrary\steamapps\common\RimWorld</RimWorld>
+    <Workshop Condition="'$(Workshop)' == ''">D:\SteamLibrary\steamapps\workshop\content\294100</Workshop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="UnityShim/**" />
+    <Reference Include="Assembly-CSharp" HintPath="$(RimWorld)\Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityStubs" HintPath="$(RimWorld)\UnityStubs.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(Workshop)\2009463077\1.7\Assemblies\0Harmony.dll" Private="false" />
+    <Reference Include="IsekaiLeveling" HintPath="$(Workshop)\3657580708\Assemblies\IsekaiLeveling.dll" Private="false" />
+    <Reference Include="IsekaiFactionRanks" HintPath="..\1.7\Assemblies\IsekaiFactionRanks.dll" Private="false" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>$(ShimName)</AssemblyName>
+    <OutputPath>..\bin\shims\</OutputPath>
+    <IntermediateOutputPath>..\obj\shims\$(ShimName)\</IntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <RimWorld Condition="'$(RimWorld)' == ''">D:\SteamLibrary\steamapps\common\RimWorld</RimWorld>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\obj\shims\Forwards.cs" />
+    <Reference Include="UnityStubs" HintPath="$(RimWorld)\UnityStubs.dll" Private="false" />
+  </ItemGroup>
+</Project>
