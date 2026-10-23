@@ -9,20 +9,7 @@
     <li><packageId>JellyCreative.IsekaiLeveling</packageId><displayName>ISEKAI RPG LEVELING</displayName><steamWorkshopUrl>steam://url/CommunityFilePage/3657580708</steamWorkshopUrl></li>
   </modDependencies>
   <loadAfter><li>brrainz.harmony</li><li>JellyCreative.IsekaiLeveling</li></loadAfter>
-  <description>ISEKAI RPG LEVELING의 랭크 적용 대상을 소속 세력별로 조절합니다.
-
-[기능]
-• 정착민 소유 동물 랭크 허용: 원본의 동물 제외 설정이 켜져 있어도 플레이어 소속 동물은 랭크를 받습니다.
-• 적대 세력 랭크 비활성화: 적대 세력의 랭크 능력치, 경험치 성장, 패시브, 오라, 랭크 기반 장비 강화와 생물 랭크 보상을 끕니다.
-• 플레이어 소속만 허용 (선택): 중립·동맹·무소속·야생 대상도 랭크에서 제외합니다.
-• 길들인 생물 보너스 유지율: 0~100% 조절.
-• 포섭하거나 소속이 바뀌면 기존 레벨과 경험치가 그대로 다시 적용됩니다.
-
-설정: 옵션 → 모드 설정 → Isekai Faction Ranks
-
----
-
-Controls which pawns receive ISEKAI RPG LEVELING ranks based on their faction.
+  <description>Controls which pawns receive ISEKAI RPG LEVELING ranks based on their faction.
 
 [Features]
 • Colony animal ranks: player-owned animals keep ranks even when the original mod excludes animals.
