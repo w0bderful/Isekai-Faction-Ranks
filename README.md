@@ -1,69 +1,69 @@
 # Isekai Faction Ranks 1.1.0
 
-RimWorld 1.6·1.7 / ISEKAI RPG LEVELING (Workshop 3657580708)용 별도 패치.
-현재 설치된 원본 1.1.8.3의 DLL에 맞춰 작성했습니다. 원본 DLL은 수정하거나 포함하지 않습니다.
+A standalone patch for ISEKAI RPG LEVELING (Workshop 3657580708) on RimWorld 1.6 / 1.7.
+Built against the currently installed original DLL (1.1.8.3). The original DLL is neither modified nor included.
 
-## 설치와 설정
+## Installation and settings
 
-1. IsekaiFactionRanks 폴더를 RimWorld/Mods에 넣습니다.
-2. Harmony → ISEKAI RPG LEVELING → Isekai Faction Ranks 순서로 활성화한 뒤 게임을 재시작합니다.
-3. 옵션 → 모드 설정 → Isekai Faction Ranks에서 조절합니다.
+1. Put the IsekaiFactionRanks folder in RimWorld/Mods.
+2. Enable Harmony → ISEKAI RPG LEVELING → Isekai Faction Ranks in that order, then restart the game.
+3. Adjust the options under Options → Mod settings → Isekai Faction Ranks.
 
-기본 설정:
-- 정착민 소유 동물 랭크 예외 허용: 켜짐.
-- 적대 세력 랭크 비활성화: 켜짐.
-- 플레이어 소속만 허용: 꺼짐. 켜면 중립·동맹·무소속·야생도 제외합니다.
-- 길들인 생물 보너스 유지율: 100%. 0~100% 조절 가능.
+Defaults:
+- Allow ranks for colony animals: on.
+- Disable ranks for hostile factions: on.
+- Player faction only: off. When on, neutral, allied, factionless and wild pawns are excluded too.
+- Tamed creature bonus retention: 100%. Adjustable from 0 to 100%.
 
-동물 예외 허용은 원본의 동물 제외 설정이 켜져 있어도 플레이어 세력 소속 동물을 허용합니다.
-야생동물은 계속 원본 설정을 따릅니다. 예외 허용을 끄면 유지율도 원본 값으로 돌아갑니다.
-원본 설정 파일의 값을 덮어쓰지 않습니다.
-동물의 성장 경로와 능력치 계산식은 원본 그대로 사용합니다.
+The colony animal exception allows animals of the player faction even when the original mod's
+exclude-animals option is on. Wild animals still follow the original setting. Turning the exception
+off also restores the original retention value. The original settings file is never overwritten.
+Animal progression and stat formulas are the original ones.
 
-## 적용 범위
+## Scope
 
-대상의 현재 소속 세력과 플레이어와의 외교 관계로 판정합니다.
-플레이어 소속은 항상 세력 차단에서 제외됩니다. 적대 소속 포로는 포섭 전까지 차단됩니다.
-적대 세력 제외만 켠 경우 무소속 식인동물의 정신 상태를 적대 세력으로 간주하지 않습니다.
-이들까지 제외하려면 플레이어 소속만 허용을 켜세요.
+Eligibility is decided by the pawn's current faction and its diplomatic relation to the player.
+The player faction is never blocked. Prisoners from hostile factions stay blocked until recruited.
+With only the hostile option on, the manhunter mental state of factionless animals does not count
+as a hostile faction. Turn on player faction only to exclude them as well.
 
-제외된 대상은 원본의 랭크 능력치, 경험치 성장, 패시브 조회, 오라 사용/표시,
-랭크 기반 추가 장비 생성, 생물 랭크 보상/표시에서 제외됩니다.
-플레이어가 적을 공격해서 얻는 기본 전투 경험치와 플레이어가 사용하는 능력은 유지됩니다.
-원본의 제외된 동물/메카/엔티티도 랭크 보너스 조회에서 제외합니다.
+Excluded pawns lose the original mod's rank stats, XP growth, passive lookups, aura use and display,
+rank-based extra gear generation, and creature rank rewards and display.
+Base combat XP the player earns by attacking enemies, and abilities the player uses, are kept.
+Animals, mechanoids and entities excluded by the original mod are also excluded from rank bonus lookups.
 
-기존 성장 컴포넌트와 저장 데이터를 삭제하지 않습니다.
-이미 저장된 Isekai 특성은 억제되며, 정보창에서 억제된 특성으로 남을 수 있습니다.
-다시 허용하면 기존 레벨/경험치를 사용합니다. 아직 성장 데이터가 없던 정착민 동물은
-맵 로드, 소속 변경 또는 최대 250틱 이내의 점검에서 초기화합니다.
+Existing progression components and save data are never deleted.
+Already saved Isekai traits are suppressed and may remain on the info card as suppressed traits.
+When a pawn becomes eligible again, its existing level and XP are used. Colony animals that had no
+progression data yet are initialized on map load, on faction change, or by a check every 250 ticks at most.
 
-이미 지급된 강화 장비, 습득한 VPE 초능력, 과거의 일회성 효과는 소급 삭제하지 않습니다.
-보스 퀘스트·보스 고유 종족·별도 애드온의 자체 능력은 이 패치의 삭제 대상이 아닙니다.
-제외된 적에게 랭크가 없어도 원래 종족이나 장비가 강하면 여전히 강합니다.
+Gear already upgraded, VPE psycasts already learned and past one-time effects are not removed retroactively.
+Abilities of boss quests, boss-specific races and separate add-ons are not affected by this patch.
+An excluded enemy without a rank can still be strong because of its race or equipment.
 
-## 검증
+## Verification
 
-- RimWorld 1.7(.NET 10) 및 원본 DLL을 직접 참조하여 빌드. 1.6용 DLL은 `1.6/Assemblies`에 그대로 유지.
-- 원본 컴포넌트 조회 73곳(66개 메서드)의 IL 치환과 서명 검증.
-- 컴포넌트 생성/복구/저장 경로는 보존하여 중복 컴포넌트 방지.
-- 성장/생성/오라 등 33개 진입점의 서명 검증.
-- 실제 DLL에 Harmony 패치 코드 생성 검증 및 모의 Pawn/Faction 기반 동작 검사.
-- 원본 동물 제외 + 정착민 동물 예외, 적대/중립/플레이어 전용,
-  경험치 보존, 포섭, 특성 억제/복원, 0% 원본 유지율 덮어쓰기 확인.
-- 게임 엔진이 필요한 정적 초기화와 실제 게임 UI/전투/저장 후 로드는 아직 게임 내 검증 전입니다.
+- Built directly against RimWorld 1.7 (.NET 10) and the original DLL. The 1.6 DLL is kept unchanged in `1.6/Assemblies`.
+- IL rewrite and signature checks for 73 original component lookups (66 methods).
+- Component creation, repair and save paths are left untouched to avoid duplicate components.
+- Signature checks for 33 entry points (progression, generation, auras and more).
+- Harmony patch emission checked on the real DLLs, plus behavior tests with mock Pawn/Faction objects.
+- Checked: original animal exclusion with the colony animal exception, hostile/neutral/player-only modes,
+  XP preservation, recruitment, trait suppression and restoration, and overriding the original 0% retention.
+- Static initialization that needs the game engine, and in-game UI, combat and save/load, have not been tested in game yet.
 
-원본 업데이트로 API가 바뀌어 적용에 실패하면 로그에 [Isekai Faction Ranks] 오류를 남기고
-이 패치가 설치한 Harmony 변경을 되돌립니다.
+If an update to the original mod changes its API and patching fails, an [Isekai Faction Ranks] error is
+logged and all Harmony changes made by this patch are reverted.
 
-## 소스 빌드
+## Building from source
 
-Windows PowerShell에서 ./build.ps1 실행(.NET 10 SDK 필요). 필요하면 -RimWorld 및 -Workshop 경로 지정.
-결과는 `1.7/Assemblies/IsekaiFactionRanks.dll`이며, `LoadFolders.xml`이 게임 버전별 DLL을 고릅니다.
-원본 Isekai DLL, 게임 DLL, Harmony는 각자의 설치 위치에서 참조합니다.
-Tests/test.ps1은 게임 밖에서 가능한 서명, IL, 부분 Harmony 및 동작 검증을 실행합니다.
-테스트 실행 파일은 게임 모드 배포물에 필요하지 않습니다.
+Run ./build.ps1 in Windows PowerShell (.NET 10 SDK required). Pass -RimWorld and -Workshop paths if needed.
+The output is `1.7/Assemblies/IsekaiFactionRanks.dll`; `LoadFolders.xml` picks the DLL for each game version.
+The original Isekai DLL, the game DLLs and Harmony are referenced from their install locations.
+Tests/test.ps1 runs the signature, IL, partial Harmony and behavior checks that are possible outside the game.
+The test executables are not needed in the mod release.
 
-## 배포
+## Links
 
 - GitHub: https://github.com/w0bderful/Isekai-Faction-Ranks
 - Steam Workshop: https://steamcommunity.com/sharedfiles/filedetails/?id=3812345444
