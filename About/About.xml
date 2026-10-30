@@ -11,27 +11,26 @@
     <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
     <li>
       <packageId>JellyCreative.IsekaiLeveling</packageId>
       <displayName>ISEKAI RPG LEVELING</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/3657580708</steamWorkshopUrl>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3657580708</steamWorkshopUrl>
     </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>JellyCreative.IsekaiLeveling</li>
   </loadAfter>
-  <description>Controls which pawns receive ISEKAI RPG LEVELING ranks based on their faction.
+  <description>Controls ISEKAI RPG LEVELING progression using each pawn's current faction and relation to the player.
 
-[Features]
-• Colony animal ranks: player-owned animals keep ranks even when the original mod excludes animals.
-• Disable hostile ranks: removes rank stats, XP growth, passives, auras, rank-based gear upgrades and creature rank rewards from hostile factions.
-• Player-only mode (optional): also excludes neutral, allied, factionless and wild pawns.
-• Tamed creature bonus retention: adjustable from 0 to 100%.
-• Recruited or converted pawns regain their existing level and XP.
+Defaults: colony animal ranks enabled, hostile faction ranks disabled, player-only mode disabled, and tamed animal bonus retention at 100%. Retention is configurable from 0% to 100%. Player-only mode also excludes neutral, allied, factionless, and wild pawns.
 
-Settings: Options → Mod settings → Isekai Faction Ranks</description>
+Excluded pawns do not receive rank stats, XP growth, passive lookups, aura use/display, rank-based equipment upgrades, or creature rank rewards/display through the patched paths. Their existing level and XP data is preserved and becomes available again when eligible. Existing rank traits are suppressed rather than deleted. Base combat XP earned by attacking enemies and abilities used by the player are retained. Earlier equipment upgrades and other one-time effects are not undone.
+
+RimWorld 1.7: faction checks safely defer hostility decisions until the player faction exists. Initialization is checked on load, settings changes, faction changes, and spawning. A fallback sweep starts every 1,500 ticks and processes at most 32 pawns per tick; initialized pawns are not rerolled. The supplied 1.6 binary is retained separately.
+
+Settings: Options &gt; Mod settings &gt; Isekai Faction Ranks. Requires Harmony and ISEKAI RPG LEVELING.</description>
   <modVersion>1.1.1</modVersion>
 </ModMetaData>

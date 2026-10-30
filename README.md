@@ -60,7 +60,7 @@ An excluded enemy without a rank can still be strong because of its race or equi
   XP preservation, recruitment, trait suppression and restoration, and overriding the original 0% retention.
 - Initialization checks cover 10,000 repeated lookups before the player faction exists, restoration of hostile filtering after its creation, and bounded fallback sweeps.
 - A full mod-list startup and world-generation run reached a map with no player-faction lookup errors after this fix. Unrelated mod errors remained in that run.
-- Static initialization that needs the game engine, and in-game UI, combat and save/load, have not been tested in game yet.
+- Dedicated in-game UI, combat, save/load, and long-session compatibility checks are still outstanding.
 
 If an update to the original mod changes its API and patching fails, an [Isekai Faction Ranks] error is
 logged and all Harmony changes made by this patch are reverted.
