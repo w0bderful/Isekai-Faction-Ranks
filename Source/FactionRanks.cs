@@ -77,6 +77,18 @@ namespace IsekaiFactionRanks
 
     public static class Policy
     {
+        // OfPlayer logs an error when world generation has not made the player
+        // faction yet. Read the same sources without requiring them to exist.
+        public static Faction PlayerFaction
+        {
+            get
+            {
+                var game = Current.Game;
+                if (Current.ProgramState != ProgramState.Playing && game?.InitData?.playerFaction != null)
+                    return game.InitData.playerFaction;
+                return game?.World?.factionManager?.OfPlayer;
+            }
+        }
         // Pure decision table is independently tested; factionless wild animals are
         // not hostile factions. Player-only mode is the explicit broader exclusion.
         public static bool Disabled(bool player, bool hostile, bool playerOnly, bool disableHostiles)
@@ -91,8 +103,9 @@ namespace IsekaiFactionRanks
             var settings = RankMod.Settings;
             if (player) return false;
             if (settings.playerOnly) return true;
-            return settings.disableHostiles && faction != null && Faction.OfPlayer != null
-                && faction.HostileTo(Faction.OfPlayer);
+            if (!settings.disableHostiles || faction == null) return false;
+            Faction playerFaction = PlayerFaction;
+            return playerFaction != null && faction.HostileTo(playerFaction);
         }
         public static bool AnimalException(Pawn pawn)
         {
@@ -130,6 +143,7 @@ namespace IsekaiFactionRanks
                 && Policy.Blocked(__instance.pawn)) __result = true;
         }
         public static void FactionChanged(Pawn __instance) { RankRefresh.RefreshPawn(__instance); }
+        public static void Spawned(Pawn __instance) { RankRefresh.RefreshPawn(__instance); }
         public static void Retention(ref float __result)
         {
             if (RankMod.Settings.colonyAnimals) __result = RankMod.Settings.animalRetention;
@@ -215,8 +229,9 @@ namespace IsekaiFactionRanks
             var excluded = Required(typeof(MobRankInjector), "IsExcludedFromRanking");
             var suppressed = AccessTools.PropertyGetter(typeof(Trait), "Suppressed");
             var factionChanged = AccessTools.Method(typeof(Pawn), "SetFaction", new[] { typeof(Faction), typeof(Pawn) });
+            var spawned = AccessTools.Method(typeof(Pawn), nameof(Pawn.SpawnSetup), new[] { typeof(Map), typeof(bool) });
             var retention = AccessTools.PropertyGetter(typeof(IsekaiLevelingSettings), "TamedAnimalBonusRetention");
-            if (suppressed == null || factionChanged == null || retention == null || lookups.Count < 40) throw new MissingMethodException("Unsupported RimWorld / Isekai API");
+            if (suppressed == null || factionChanged == null || spawned == null || retention == null || lookups.Count < 40) throw new MissingMethodException("Unsupported RimWorld / Isekai API");
             try
             {
                 foreach (var target in lookups) harmony.Patch(target, transpiler: new HarmonyMethod(typeof(PatchPlan), "FilterLookups"));
@@ -224,6 +239,7 @@ namespace IsekaiFactionRanks
                 harmony.Patch(excluded, postfix: new HarmonyMethod(typeof(Hooks), "Excluded"));
                 harmony.Patch(suppressed, postfix: new HarmonyMethod(typeof(Hooks), "TraitSuppressed"));
                 harmony.Patch(factionChanged, postfix: new HarmonyMethod(typeof(Hooks), "FactionChanged"));
+                harmony.Patch(spawned, postfix: new HarmonyMethod(typeof(Hooks), "Spawned"));
                 harmony.Patch(retention, postfix: new HarmonyMethod(typeof(Hooks), "Retention"));
             }
             catch
@@ -231,17 +247,24 @@ namespace IsekaiFactionRanks
                 harmony.UnpatchAll(harmony.Id);
                 throw;
             }
-            return lookups.Count + prefixes.Count + 4;
+            return lookups.Count + prefixes.Count + 5;
         }
     }
 
     public class RankRefresh : GameComponent
     {
+        public const int SweepInterval = 1500;
+        public const int PawnsPerTick = 32;
+        private readonly BoundedSweep<Pawn> sweep = new BoundedSweep<Pawn>();
+        private static readonly Action<Pawn> refresh = RefreshPawn;
         public RankRefresh(Game game) { }
         public override void FinalizeInit() { RefreshMaps(); }
         public override void GameComponentTick()
         {
-            if (Find.TickManager.TicksGame % 250 == 0) RefreshMaps();
+            if (!RankMod.Ready) return;
+            if (Find.TickManager.TicksGame % SweepInterval == 0 && !sweep.Pending)
+                sweep.Start(Find.Maps.Select(m => (IReadOnlyList<Pawn>)m.mapPawns.AllPawnsSpawned));
+            sweep.Step(PawnsPerTick, refresh);
         }
         public static void RefreshMaps()
         {
@@ -264,6 +287,33 @@ namespace IsekaiFactionRanks
                 var comp = pawn.GetComp<IsekaiComponent>();
                 if (comp != null && !comp.statsInitialized && PawnStatGenerator.ShouldGenerateStats(pawn)) comp.PostSpawnSetup(true);
             }
+        }
+    }
+
+    // Retain list references, not a snapshot of every pawn. Map pawn lists may
+    // change during a sweep; skipped entries are covered by events/next sweep.
+    public sealed class BoundedSweep<T>
+    {
+        private readonly List<IReadOnlyList<T>> groups = new List<IReadOnlyList<T>>();
+        private int group, item;
+        public bool Pending => group < groups.Count;
+        public void Start(IEnumerable<IReadOnlyList<T>> sources)
+        {
+            groups.Clear(); groups.AddRange(sources); group = item = 0;
+        }
+        public int Step(int budget, Action<T> action)
+        {
+            int visited = 0;
+            // Empty groups also consume traversal budget to bound map work.
+            for (int work = 0; work < budget && Pending; work++)
+            {
+                var list = groups[group];
+                if (item >= list.Count) { group++; item = 0; continue; }
+                T value = list[item++];
+                action(value); visited++;
+            }
+            if (!Pending) { groups.Clear(); group = item = 0; }
+            return visited;
         }
     }
 }

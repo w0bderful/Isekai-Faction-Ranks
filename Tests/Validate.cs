@@ -108,13 +108,14 @@ class Validate
     static void Expect(bool value, string label) { if (!value) throw new Exception(label); }
     static void RunPawnCases(Harmony harmony)
     {
+        OptimizationValidation.Run(harmony);
         // Replace only environment services that require a running Unity game.
         // Pawn, faction relation, component and original exclusion code remain real.
         harmony.Patch(AccessTools.Method(typeof(Log), "Message", new[] { typeof(string) }), prefix: new HarmonyMethod(typeof(Validate), "QuietLog"));
         harmony.Patch(AccessTools.Method(typeof(Log), "Warning", new[] { typeof(string) }), prefix: new HarmonyMethod(typeof(Validate), "QuietLog"));
         FleshTypeDefOf.Mechanoid = Blank<FleshTypeDef>();
         harmony.Patch(AccessTools.PropertyGetter(typeof(RaceProperties), "IsAnomalyEntity"), prefix: new HarmonyMethod(typeof(Validate), "QuietLog"));
-        harmony.Patch(AccessTools.PropertyGetter(typeof(Faction), "OfPlayer"), prefix: new HarmonyMethod(typeof(Validate), "FakePlayer"));
+        harmony.Patch(AccessTools.PropertyGetter(typeof(Policy), "PlayerFaction"), prefix: new HarmonyMethod(typeof(Validate), "FakePlayer"));
         harmony.Patch(AccessTools.Method(typeof(MobRankInjector), "IsExcludedFromRanking"), postfix: new HarmonyMethod(typeof(Hooks), "Excluded"));
         harmony.Patch(AccessTools.Method(typeof(IsekaiComponent), "GetCached"), prefix: new HarmonyMethod(typeof(Hooks), "PawnGate"));
         harmony.Patch(AccessTools.PropertyGetter(typeof(IsekaiLevelingSettings), "TamedAnimalBonusRetention"), postfix: new HarmonyMethod(typeof(Hooks), "Retention"));

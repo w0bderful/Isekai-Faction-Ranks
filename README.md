@@ -1,4 +1,11 @@
-# Isekai Faction Ranks 1.1.0
+# Isekai Faction Ranks 1.1.1
+
+RimWorld 1.7 update: policy lookups safely defer hostility checks until a player faction exists,
+without using the error-logging `Faction.OfPlayer` getter. Load, settings changes, faction changes
+and completed pawn spawning trigger immediate initialization checks. Fallback checks start every
+1,500 ticks and visit at most 32 pawns per tick across maps; initialized pawns are not rerolled.
+This replaces the 250-tick full scan. No faction policy cache is introduced, so diplomacy and
+settings changes take effect on subsequent lookups. The retained 1.6 binary is unchanged.
 
 A standalone patch for ISEKAI RPG LEVELING (Workshop 3657580708) on RimWorld 1.6 / 1.7.
 Built against the currently installed original DLL (1.1.8.3). The original DLL is neither modified nor included.
@@ -35,7 +42,8 @@ Animals, mechanoids and entities excluded by the original mod are also excluded 
 Existing progression components and save data are never deleted.
 Already saved Isekai traits are suppressed and may remain on the info card as suppressed traits.
 When a pawn becomes eligible again, its existing level and XP are used. Colony animals that had no
-progression data yet are initialized on map load, on faction change, or by a check every 250 ticks at most.
+progression data yet are checked on map load, settings/faction changes and spawning, with a
+fallback sweep every 1,500 ticks processed in batches of at most 32 pawns per tick.
 
 Gear already upgraded, VPE psycasts already learned and past one-time effects are not removed retroactively.
 Abilities of boss quests, boss-specific races and separate add-ons are not affected by this patch.
@@ -50,6 +58,8 @@ An excluded enemy without a rank can still be strong because of its race or equi
 - Harmony patch emission checked on the real DLLs, plus behavior tests with mock Pawn/Faction objects.
 - Checked: original animal exclusion with the colony animal exception, hostile/neutral/player-only modes,
   XP preservation, recruitment, trait suppression and restoration, and overriding the original 0% retention.
+- Initialization checks cover 10,000 repeated lookups before the player faction exists, restoration of hostile filtering after its creation, and bounded fallback sweeps.
+- A full mod-list startup and world-generation run reached a map with no player-faction lookup errors after this fix. Unrelated mod errors remained in that run.
 - Static initialization that needs the game engine, and in-game UI, combat and save/load, have not been tested in game yet.
 
 If an update to the original mod changes its API and patching fails, an [Isekai Faction Ranks] error is

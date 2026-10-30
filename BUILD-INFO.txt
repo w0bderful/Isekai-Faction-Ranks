@@ -1,8 +1,8 @@
-Isekai Faction Ranks 1.1.0
-Built: 2026-10-24
-RimWorld 1.7.4985 (.NET 10) -> 1.7/Assemblies
-RimWorld 1.6 -> 1.6/Assemblies (unchanged 1.0.0 build)
-Harmony: 2009463077 1.7 (0Harmony 3.0)
+Isekai Faction Ranks 1.1.1
+Built: 2026-10-30
+RimWorld 1.7.4990 rev1069 (.NET 10) -> 1.7/Assemblies
+RimWorld 1.6 -> 1.6/Assemblies (unchanged retained build)
+Harmony: 2009463077 1.7
 Original workshop: 3657580708
-Original About version: 1.1.8.3
 Original DLL SHA256: 7A1FA455EF32C2BDD5583AFC24235DBCCE1F90974F27FABDC861A1EB7AAA89A1
+Validation: build zero warnings/errors; existing policy/Harmony checks and 10,323 initialization/sweep checks passed.
