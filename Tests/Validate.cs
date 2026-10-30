@@ -109,6 +109,7 @@ class Validate
     static void RunPawnCases(Harmony harmony)
     {
         OptimizationValidation.Run(harmony);
+        ReloadPolicyValidation.Run(harmony);
         // Replace only environment services that require a running Unity game.
         // Pawn, faction relation, component and original exclusion code remain real.
         harmony.Patch(AccessTools.Method(typeof(Log), "Message", new[] { typeof(string) }), prefix: new HarmonyMethod(typeof(Validate), "QuietLog"));

@@ -29,8 +29,8 @@ Defaults: colony animal ranks enabled, hostile faction ranks disabled, player-on
 
 Excluded pawns do not receive rank stats, XP growth, passive lookups, aura use/display, rank-based equipment upgrades, or creature rank rewards/display through the patched paths. Their existing level and XP data is preserved and becomes available again when eligible. Existing rank traits are suppressed rather than deleted. Base combat XP earned by attacking enemies and abilities used by the player are retained. Earlier equipment upgrades and other one-time effects are not undone.
 
-RimWorld 1.7: faction checks safely defer hostility decisions until the player faction exists. Initialization is checked on load, settings changes, faction changes, and spawning. A fallback sweep starts every 1,500 ticks and processes at most 32 pawns per tick; initialized pawns are not rerolled. The supplied 1.6 binary is retained separately.
+RimWorld 1.7: faction checks safely defer hostility decisions until the player faction and its relation to the pawn's faction exist. This also handles cached pawns from a previous world during reloading without creating faction relations or changing their saved data. Valid relations still use the original hostility check. Initialization is checked on load, settings changes, faction changes, and spawning. A fallback sweep starts every 1,500 ticks and processes at most 32 pawns per tick; initialized pawns are not rerolled. The supplied 1.6 binary is retained separately.
 
 Settings: Options &gt; Mod settings &gt; Isekai Faction Ranks. Requires Harmony and ISEKAI RPG LEVELING.</description>
-  <modVersion>1.1.1</modVersion>
+  <modVersion>1.1.2</modVersion>
 </ModMetaData>

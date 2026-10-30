@@ -1,4 +1,11 @@
-# Isekai Faction Ranks 1.1.1
+# Isekai Faction Ranks 1.1.2
+
+RimWorld 1.7 reload fix: defer hostile filtering when a faction has no relation to the current
+player faction. This prevents repeated null-relation errors when another mod queries a cached
+pawn from the previous world. Factions with matching saved IDs are not treated as the same object.
+Valid relations still use the original `HostileTo` call, preserving other mods' normal hostility hooks.
+No faction relations, progression data, or external mod caches are changed. Deferred checks use
+the current relation on the next lookup; no diplomacy result is cached.
 
 RimWorld 1.7 update: policy lookups safely defer hostility checks until a player faction exists,
 without using the error-logging `Faction.OfPlayer` getter. Load, settings changes, faction changes
@@ -59,8 +66,10 @@ An excluded enemy without a rank can still be strong because of its race or equi
 - Checked: original animal exclusion with the colony animal exception, hostile/neutral/player-only modes,
   XP preservation, recruitment, trait suppression and restoration, and overriding the original 0% retention.
 - Initialization checks cover 10,000 repeated lookups before the player faction exists, restoration of hostile filtering after its creation, and bounded fallback sweeps.
+- An additional 1,013 checks cover missing relations, repeated stale pawn/trait queries, diplomacy changes, policy toggles, and resuming hostile filtering when a relation becomes available. The same regression fails against the previous DLL.
 - A full mod-list startup and world-generation run reached a map with no player-faction lookup errors after this fix. Unrelated mod errors remained in that run.
-- Dedicated in-game UI, combat, save/load, and long-session compatibility checks are still outstanding.
+- Native 1.7 validation used the current 223-mod load order plus one test-only observer in an isolated settings copy. Three actual save/load cycles, 3,000 retained previous-world pawn/trait queries, and 1,800 native ticks completed with zero null-relation errors. Level, XP, policy settings, and normal hostile/player eligibility survived reloading. The observer did not suppress errors or clear external caches; unrelated Immersive Filter and Kiiro errors remained.
+- Dedicated in-game UI, combat, and long-session compatibility checks are still outstanding.
 
 If an update to the original mod changes its API and patching fails, an [Isekai Faction Ranks] error is
 logged and all Harmony changes made by this patch are reverted.

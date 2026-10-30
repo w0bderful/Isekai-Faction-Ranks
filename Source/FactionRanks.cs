@@ -105,7 +105,13 @@ namespace IsekaiFactionRanks
             if (settings.playerOnly) return true;
             if (!settings.disableHostiles || faction == null) return false;
             Faction playerFaction = PlayerFaction;
-            return playerFaction != null && faction.HostileTo(playerFaction);
+            // Reload-time caches may still query a pawn from the previous world.
+            // Matching faction IDs do not imply matching faction objects. Defer
+            // until an actual relation exists, without creating a dummy relation
+            // or bypassing other mods' normal HostileTo hooks for valid factions.
+            if (playerFaction == null || faction == playerFaction
+                || faction.RelationWith(playerFaction, allowNull: true) == null) return false;
+            return faction.HostileTo(playerFaction);
         }
         public static bool AnimalException(Pawn pawn)
         {
